@@ -162,7 +162,7 @@ return false;
                                      buf.type=TokenType::INTLTR;
                                      cur_str="";
                                      cur_state=State::Empty;
-                                     std::cout<<"yes"<<std::endl;
+                                    
                                      return true;}
                    else if(input>='A'&&input<='Z'||input>='a'&&input<='z'||input>='0'&&input<='9'){
                                     cur_str+=input;
@@ -179,7 +179,7 @@ return false;
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::Ident;
-						std::cout<<"yes"<<std::endl;
+						
                                     return true;
 					}
 					else{
@@ -188,7 +188,7 @@ return false;
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::op;
-						std::cout<<"yes"<<std::endl;
+						
                                     return true;
 					}
 									
@@ -202,7 +202,7 @@ case State::FloatLiteral:{
                         buf.type=TokenType::FLOATLTR;
                         cur_str="";
                         cur_state=State::Empty;
-                        std::cout<<"yes"<<std::endl;
+                      
                         return true;}
                    
 					
@@ -218,7 +218,7 @@ case State::FloatLiteral:{
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::op;
-						std::cout<<"yes"<<std::endl;
+						
                                     return true;
 					}
 									
@@ -230,7 +230,7 @@ case State::op:{
                         buf.type=get_type_op(buf.value);
                         cur_str="";
                         cur_state=State::Empty;
-                        std::cout<<"yes"<<std::endl;
+                      
                         return true;}
                    
 					
@@ -241,7 +241,7 @@ case State::op:{
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::Ident;
-						std::cout<<"yes"<<std::endl;
+						
                                     return true;
 					}
 					else if(input>='0'&&input<='9'){
@@ -251,7 +251,7 @@ case State::op:{
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::IntLiteral;
-						std::cout<<"yes"<<std::endl;
+					
                                     return true;
 					}
 					else if((cur_str+input)=="<="||(cur_str+input)==">="||(cur_str+input)=="=="||(cur_str+input)=="&&"||(cur_str+input)=="||"||(cur_str+input)=="!="){
@@ -261,7 +261,7 @@ case State::op:{
                         cur_str="";
 						
 						cur_state=State::Empty;
-						std::cout<<"yes"<<std::endl;
+					
                                     return true;
 					}
 					else if(input=='.'){
@@ -271,7 +271,7 @@ case State::op:{
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::FloatLiteral;
-						std::cout<<"yes"<<std::endl;
+						
                                     return true;
 					}
 					else if((cur_str+input)=="/*"){
@@ -291,7 +291,7 @@ case State::op:{
                         cur_str="";
 						cur_str+=input;
 						cur_state=State::op;
-						std::cout<<"yes"<<std::endl;
+						
                                     return true;
 					}
 									
@@ -303,7 +303,7 @@ case State::Ident:{
                         buf.type=get_type_idet(buf.value);
                         cur_str="";
                         cur_state=State::Empty;
-                        std::cout<<"yes"<<std::endl;
+                  
                         return true;}
                    
 					
@@ -322,7 +322,7 @@ case State::Ident:{
                         cur_str="";
                         cur_str+=input;
                         cur_state=State::op;
-                        std::cout<<"yes"<<std::endl;
+                     
                         return true;
 					}
 									
@@ -375,7 +375,7 @@ std::vector<frontend::Token> frontend::Scanner::run() {
 	if(y==13)s+=s1.substr(0,s1.size()-1);
 	else s+=s1.substr(0,s1.size());
 	s+='\n';
-	std::cout<<"------"<<y<<"------"<<std::endl;
+	
 	ss+=s1[s1.size()-1];
 	if(s1.size()>=2)
 	sss+=s1[s1.size()-2];}
@@ -389,15 +389,9 @@ std::vector<frontend::Token> frontend::Scanner::run() {
 	int q=(int)ss[ss.size()-1];
 	
 	s+='\n';
-	std::cout<<s<<std::endl;
+	
     for(auto c: s) {
-    	std::cout<<"c:"<<c<<std::endl;
-    	if(c==' ')
-    	std::cout<<"999"<<std::endl;
-    	if(c=='\t')
-    	std::cout<<"666"<<std::endl;
-    	if(c=='\n')
-    	std::cout<<"777"<<std::endl;
+    	
         if(dfa.next(c, tk)){
         	
             ret.push_back(tk);
@@ -405,12 +399,11 @@ std::vector<frontend::Token> frontend::Scanner::run() {
 }
 	
 
-    for(int i=0;i<ret.size();i++){
-	   std::cout<<toString(ret[i].type)<<std::endl;
-    	std::cout<<ret[i].value<<std::endl;}
+ 
     return ret;
 #ifdef DEBUG_SCANNER
 #include<iostream>
             std::cout << "token: " << toString(tk.type) << "\t" << tk.value << std::endl;
 #endif
 }
+
