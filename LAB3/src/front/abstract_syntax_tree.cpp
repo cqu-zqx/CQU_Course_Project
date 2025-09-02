@@ -45,22 +45,20 @@ AstNode::~AstNode() {
 }
 
 void AstNode::get_json_output(Json::Value& root) const {
-	std::cout<<toString(type)<<std::endl;
+	
 	
     root["name"] = toString(type);
     if (type == NodeType::TERMINAL) {
         auto termP = dynamic_cast<Term*>(const_cast<AstNode*>(this));
         assert(termP);
-        std::cout<<"123:"<<toString(termP->token.type)<<std::endl;
+
         root["type"] = toString(termP->token.type);
         root["value"] = termP->token.value;
     }
     else {
         root["subtree"] = Json::Value();
-        std::cout<<"------------------"<<std::endl;
-        for(const auto& node: children) 
-        	std::cout<<toString(node->type)<<std::endl;
-        	std::cout<<"------------------"<<std::endl;
+
+        
         for(const auto& node: children) {
         
             Json::Value tmp;
@@ -174,4 +172,5 @@ std::string frontend::toString(NodeType nt) {
         break;
     }
     return "";
+
 }
