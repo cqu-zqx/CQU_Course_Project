@@ -28,11 +28,8 @@ frontend::CompUnit* Parser::get_abstract_syntax_tree(){
     int p=100;
     while(symbol.size()!=0){
     	int select_op=0;
-    	for(int i=0;i<symbol.size();i++)
-    	std::cout<<symbol[i]<<std::endl;
-    	std::cout<<"------------------"<<std::endl;
-    	//std::cout<<toString(token_stream[index].type)<<std::endl;
-    	std::cout<<symbol[symbol.size()-1].substr(0,4)<<std::endl;
+    
+    	
     	if(symbol[symbol.size()-1]=="CompUnit"){
     		switch(token_stream[index].type){
     			case TokenType::CONSTTK: {
@@ -954,8 +951,7 @@ frontend::CompUnit* Parser::get_abstract_syntax_tree(){
     	//
     	//
 
-    	std::cout<<select_op<<std::endl;
-    	std::cout<<"\n\n\n"<<std::endl;
+    	
     	if(select_op)
     		ops.push_back(select_op);
     	if(select_op==1){
@@ -1389,15 +1385,8 @@ frontend::CompUnit* Parser::get_abstract_syntax_tree(){
     	
     	
 	}
-	std::cout<<"--------------"<<std::endl;
-	for(int i=0;i<ops.size();i++)
-	std::cout<<ops[i]<<std::endl;
-	std::cout<<"--------------"<<std::endl;
-	for(int i=0;i<1000;i++){
 	
-	
-	std::cout<<counts[i]<<std::endl;}
-	std::cout<<"--------------"<<std::endl;
+
 	std::vector<AstNode*> tree;
 	std::vector<Term*> term;
 	tree.push_back(root);
@@ -1406,15 +1395,7 @@ frontend::CompUnit* Parser::get_abstract_syntax_tree(){
 	int c=0;
 	Token sl;
 	while(tree.size()!=0){
-		for(int i=0;i<tree.size();i++){
-			std::cout<<toString(tree[i]->type)<<std::endl;
-		}
-		std::cout<<o<<std::endl;
-		std::cout<<ops[o]<<std::endl;
-		std::cout<<c<<std::endl;
-		std::cout<<counts[c]<<std::endl;
-		std::cout<<"\n\n"<<std::endl;
-		std::cout<<token_stream[t].value<<std::endl;
+		
 		int num=0;
 		if(tree[tree.size()-1]->type==NodeType::TERMINAL){
 			term[term.size()-1]->token=token_stream[t++];
@@ -2571,3 +2552,4 @@ void Parser::log(AstNode* node){
         std::cout << "in parse" << toString(node->type) << ", cur_token_type::" << toString(token_stream[index].type) << ", token_val::" << token_stream[index].value << '\n';
 #endif
 }
+
