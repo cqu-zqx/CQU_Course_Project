@@ -30,7 +30,6 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
     switch (instr.op)
     {
         case ir::Operator::_return:{
-        	cout<<"return\n";
             if (instr.op1.type == ir::Type::Int){
             	int flag=0;
             for(auto j:globalvs){
@@ -41,14 +40,13 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
                 }
                 if(flag==1){
                 	insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X10,  (instr.op1.name)));
-                	    cout<<insts[insts.size()-1].draw();
+        
                     insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG::X10, rv::rvREG::X10, 0));
-                        cout<<insts[insts.size()-1].draw();
 				}
 				else{
 					int arr=stack_.find_operand(instr.op1);
 					 insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG::X10, rv::rvREG::X2, arr));
-					     cout<<insts[insts.size()-1].draw();
+					   
 				}
                    
             }
@@ -62,19 +60,17 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
                 }
                 if(flag==1){
                 	insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X10,  (instr.op1.name)));
-                	    cout<<insts[insts.size()-1].draw();
                     insts.push_back(rv::rv_inst(rv::rvOPCODE::FLW, rv::rvFREG::F10, rv::rvREG::X10, 0));
-                        cout<<insts[insts.size()-1].draw();
 				}
 				else{
 					int arr=stack_.find_operand(instr.op1);
 					 insts.push_back(rv::rv_inst(rv::rvOPCODE::FLW, rv::rvFREG::F10, rv::rvREG::X2, arr));
-					     cout<<insts[insts.size()-1].draw();
+					    
 				}
             }
             else if(instr.op1.type == ir::Type::IntLiteral){
                 insts.push_back(rv::rv_inst(rv::rvOPCODE::LI, rv::rvREG::X10, std::stoi(instr.op1.name)));
-                    cout<<insts[insts.size()-1].draw();
+                   
                 
             }
             else if(instr.op1.type == ir::Type::FloatLiteral){
@@ -125,26 +121,26 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
 				}
                 floats.push_back(op1.name);
                 insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X10, "VALUES" + std::to_string(floats.size()-1)));
-                    cout<<insts[insts.size()-1].draw();
+                   
                 insts.push_back(rv::rv_inst(rv::rvOPCODE::FLW, rv::rvFREG::F10, rv::rvREG::X10, 0));
-                    cout<<insts[insts.size()-1].draw();
+                   
             }
             else{
 			}
             
             insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG::X1, rv::rvREG::X2, 
                 w1));
-                    cout<<insts[insts.size()-1].draw();
+                   
             insts.push_back(rv::rv_inst(rv::rvOPCODE::ADDI, rv::rvREG::X2, rv::rvREG::X2, 0));
-                cout<<insts[insts.size()-1].draw();
+               
             insts.push_back(rv::rv_inst(rv::rvOPCODE::JR, rv::rvREG::X1));
-                cout<<insts[insts.size()-1].draw();
+
 
             break;
         }
 
         case ir::Operator::call:{
-        	cout<<"call\n";
+        	
           
             for(auto param:((ir::CallInst&) instr).argumentList){
                 if(param.type == ir::Type::Int ){
@@ -159,10 +155,10 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
                 	if(P1<31){
 					
                 	insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG(P1),  (param.name)));
-                	    cout<<insts[insts.size()-1].draw();
+                	   
                     insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG(P1), rv::rvREG(P1), 0));
                     P1++;
-                        cout<<insts[insts.size()-1].draw();}
+                       }
                         else{
                         	insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG(P1),  (param.name)));
                         	insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG(P1), rv::rvREG(P1), 0));
@@ -176,7 +172,7 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
 					
 					 insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG(P1), rv::rvREG::X2, arr));
 					 P1++;
-					     cout<<insts[insts.size()-1].draw();}
+					     }
 					     else{
 					     	insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG(P1), rv::rvREG::X2, arr));
 					     	insts.push_back(rv::rv_inst(rv::rvOPCODE::CVT_I2F, rv::rvFREG(P2), rv::rvREG(P1), 1));
@@ -225,14 +221,14 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
                 }
                 if(flag==1){
                 	 insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X31,  (param.name)));
-                	     cout<<insts[insts.size()-1].draw();
+                	    
                      insts.push_back(rv::rv_inst(rv::rvOPCODE::FLW, rv::rvFREG(P2), rv::rvREG::X31, 0));
-                         cout<<insts[insts.size()-1].draw();
+                        
 				}
 				else{
 					int arr=stack_.find_operand(param);
 					 insts.push_back(rv::rv_inst(rv::rvOPCODE::FLW, rv::rvFREG(P2), rv::rvREG::X2, arr));
-					     cout<<insts[insts.size()-1].draw();
+					   
 				}
 
                     P2++;
@@ -250,17 +246,17 @@ void backend::Generator::gen_instr(const ir::Instruction& instr){
 				
                 floats.push_back(instr.op1.name);
                 insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X4, "VALUES" + std::to_string(floats.size()-1)));
-                    cout<<insts[insts.size()-1].draw();
+                    
                 insts.push_back(rv::rv_inst(rv::rvOPCODE::FLW, rv::rvFREG(P2++), rv::rvREG::X4, 0));
-                    cout<<insts[insts.size()-1].draw();
+                    
                 
 				}
             }
 
             insts.push_back(rv::rv_inst(rv::rvOPCODE::CALL, instr.op1.name));
-cout<<"----------function-------------------\n";
+
             if(instr.des.type == ir::Type::Int){
-            	cout<<"8888888888888888888888----------\n";
+            	
             	int flag=0;
             	for(auto j:globalvs){
                     if(j==instr.des.name){
@@ -269,25 +265,25 @@ cout<<"----------function-------------------\n";
                     }
                 }
                 if(flag==1){
-                	cout<<"11111111111111111----------\n";
+                	
                           insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X11,  (instr.des.name)));
-                              cout<<insts[insts.size()-1].draw();
+                              
               insts.push_back(rv::rv_inst(rv::rvOPCODE::SW, rv::rvREG::X11, 0, rv::rvREG::X10));
-                  cout<<insts[insts.size()-1].draw();
+                 
                 }
                 else{
                         if(stack_._table.find(instr.des) != stack_._table.end()){
                         	int arr=stack_.find_operand(instr.des);
-                        	cout<<"2222222222222222222----------\n";
+                        	
                             insts.push_back(rv::rv_inst(rv::rvOPCODE::SW, rv::rvREG::X2, arr, rv::rvREG::X10));
-                                cout<<insts[insts.size()-1].draw();
+                               
                         }
                         else{
-                        	cout<<"333333333333333333----------\n";
+                        	
                             stack_.add_operand(instr.des);
                             int arr=stack_.find_operand(instr.des);
                             insts.push_back(rv::rv_inst(rv::rvOPCODE::SW, rv::rvREG::X2, arr, rv::rvREG::X10));
-                                cout<<insts[insts.size()-1].draw();
+                                
                         }
                 }
 
@@ -302,9 +298,9 @@ cout<<"----------function-------------------\n";
                 }
                 if(flag==1){
                           insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X11,  (instr.des.name)));
-                              cout<<insts[insts.size()-1].draw();
+                             
               insts.push_back(rv::rv_inst(rv::rvOPCODE::FSW, rv::rvREG::X11, 0, rv::rvFREG::F10));
-                  cout<<insts[insts.size()-1].draw();
+                
                 }
                 else{
                         if(stack_._table.find(instr.des) != stack_._table.end()){
@@ -319,7 +315,7 @@ cout<<"----------function-------------------\n";
                 }
  
             }
-            else {cout<<"444444444444444444444----------\n";}
+           
 		P1=10;P2=10;
             break;
         }
@@ -327,7 +323,7 @@ cout<<"----------function-------------------\n";
 
 
         case ir::Operator::fdef:{
-        	cout<<"fdef\n";
+        	
         	 int flag=0;
         
            int flag1=0;
@@ -434,7 +430,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::add:{
-        	cout<<"add\n";
+        
             int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -465,18 +461,18 @@ cout<<"----------function-------------------\n";
                       if(flag==1){
                     
                     insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X10,  (operand.name)));
-                    cout<<insts[insts.size()-1].draw();
+                  
                     if(ci==1)
                 insts.push_back(rv::rv_inst(rv::rvOPCODE::LW,rv::rvREG::X11, rv::rvREG::X10, 0));
                 
                 else if(ci==2) insts.push_back(rv::rv_inst(rv::rvOPCODE::LW, rv::rvREG::X12,rv::rvREG::X10, 0));
                 else{
                 	insts.push_back(rv::rv_inst(rv::rvOPCODE::ADD, rv::rvREG::X10, rv::rvREG::X11, rv::rvREG::X12));
-                	cout<<insts[insts.size()-1].draw();
+                	
                 	insts.push_back(rv::rv_inst(rv::rvOPCODE::LA, rv::rvREG::X14,  (operand.name)));
-                	cout<<insts[insts.size()-1].draw();
+                	
                		insts.push_back(rv::rv_inst(rv::rvOPCODE::SW, rv::rvREG::X14, 0, rv::rvREG::X10));
-               		cout<<insts[insts.size()-1].draw();
+               		
 				}
                 }
                         else{
@@ -500,7 +496,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::fadd:{
-        	cout<<"fadd\n";
+
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -559,7 +555,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::sub:{
-        	cout<<"sub\n";
+        
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -618,7 +614,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::fsub:{
-        	cout<<"fsub\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -781,7 +777,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::mul:{
-        	cout<<"mul\n";
+        	
         	int flag=0,flag1=0,flag2=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -933,7 +929,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::fmul:{
-        	cout<<"fmul\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -992,7 +988,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::div:{
-        	cout<<"div\n";
+        	
         	int flag=0;
             int ci=0;
             int flag1=0;
@@ -1145,7 +1141,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::fdiv:{
-        	cout<<"fdiv\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -1204,7 +1200,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::mod:{
-        	cout<<"mod\n";
+        	
         	int flag=0;
             int ci=0;
             int flag1=0;
@@ -1358,7 +1354,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::eq:{
-        	cout<<"eq\n";
+        	
         	int flag=0,flag1=0,flag2=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -1511,7 +1507,7 @@ cout<<"----------function-------------------\n";
 
         }
         case ir::Operator::feq:{
-        	cout<<"feq\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -1579,8 +1575,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::neq:{
-        	cout<<"0000000000000000000000000000000000000000000000\n";
-        	cout<<"neq\n";
+        	
         	int flag=0,flag1=0,flag2=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -1741,8 +1736,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::fneq:{
-        	cout<<"111111111111111111111111111111111111111111\n";
-        	cout<<"fneq\n";
+        	
         	int flag=0;
             int ci=0;
             int flag1=0;int flag2=0;
@@ -1836,7 +1830,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::addi:{
-        	cout<<"addi\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -1941,7 +1935,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::subi:{
-        	cout<<"subi\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2046,7 +2040,7 @@ cout<<"----------function-------------------\n";
 
         case ir::Operator::mov:
 		case ir::Operator::def:{
-        	cout<<"mov//def\n";
+        
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2199,7 +2193,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::fmov:{
-        	cout<<"fmov\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2258,7 +2252,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::lss:{
-        	cout<<"lss\n";
+        	
         	int flag=0;
             int ci=0;
             int flag1=0;
@@ -2414,7 +2408,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::flss:{
-        	cout<<"flss\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2477,7 +2471,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::geq:{
-        	cout<<"geq\n";
+        	
         	int flag=0,flag1=0,flag2=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2630,7 +2624,7 @@ cout<<"----------function-------------------\n";
 
         }
 		case ir::Operator::fgeq:{
-			cout<<"fgeq\n";
+			
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2699,7 +2693,7 @@ cout<<"----------function-------------------\n";
 
         }
         case ir::Operator::leq:{
-        	cout<<"leq\n";
+        	
         	int flag=0,flag1=0,flag2=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2852,7 +2846,7 @@ cout<<"----------function-------------------\n";
 
         }
         case ir::Operator::fleq:{
-        	cout<<"fleq\n";
+        
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -2921,7 +2915,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::gtr:{
-        	cout<<"gtr\n";
+        
         	int flag=0,flag1=0,flag2=0;
             int ci=0;
          
@@ -3075,7 +3069,7 @@ cout<<"----------function-------------------\n";
 
         }
 		 case ir::Operator::fgtr:{
-		 	cout<<"fgtr\n";
+		 
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -3141,7 +3135,7 @@ cout<<"----------function-------------------\n";
 
         }
         case ir::Operator::cvt_i2f:{
-        	cout<<"cvt_i2f\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -3202,7 +3196,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::cvt_f2i:{
-        	cout<<"cvt_f2i\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -3272,7 +3266,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::_not:{
-        	cout<<"not\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -3331,7 +3325,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::_or:{
-        	cout<<"or\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -3395,7 +3389,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::_and:{
-        	cout<<"and\n";
+        	
         	int flag=0;
             int ci=0;
             ir::Operand op1=instr.op1;
@@ -3459,7 +3453,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::alloc:{
-        	cout<<"alloc\n";
+        	
         	string a;
       		if(stoi(instr.op1.name)>50)
       		 a="50";
@@ -3471,7 +3465,7 @@ cout<<"----------function-------------------\n";
         }
 
         case ir::Operator::_goto:{
-        	cout<<"goto\n";
+        	
         	int flag=0;
                 ir::Operand op1=instr.op1;
                 ir::Operand op2=instr.op2;
@@ -3506,7 +3500,7 @@ cout<<"----------function-------------------\n";
 
 
 		case ir::Operator::store:{
-			cout<<"store\n";
+			
             if(instr.op1.type==ir::Type::IntPtr){
             	int flag=0;
             	int ci=0;
@@ -3680,7 +3674,7 @@ cout<<"----------function-------------------\n";
 
 
         case ir::Operator::load:{
-        	cout<<"load\n";
+        	
             if(instr.des.type == ir::Type::Int){
             		int flag=0;
             	int ci=0;
@@ -3835,7 +3829,7 @@ cout<<"----------function-------------------\n";
         }
         
         case ir::Operator::__unuse__:{
-        	cout<<"_unuse_\n";
+        	
             insts.push_back(rv::rv_inst(rv::rvOPCODE::NOP, rv::rvREG::X2, "")); 
             break;
         }
@@ -3849,18 +3843,13 @@ cout<<"----------function-------------------\n";
 }
 
 void backend::Generator::gen_func(const ir::Function& function){
-	cout<<"-----------------start------------------\n";
-   for(auto it=j_.begin();it!=j_.end();it++){
-    	cout<<"------------------"<<endl;
-    	cout<<it->first<<endl;
-	}
+	
     auto Q = ir::Operand("123", ir::Type::Int);
     stack_.add_operand(Q);
     w1=stack_.delt-4;
     insts.push_back(rv::rv_inst(rv::rvOPCODE::ADDI, rv::rvREG::X2, rv::rvREG::X2, 0));
-        cout<<insts[insts.size()-1].draw();
+       
     insts.push_back(rv::rv_inst(rv::rvOPCODE::SW, rv::rvREG::X2, w1, rv::rvREG::X1));
- cout<<insts[insts.size()-1].draw();
    
 
 for(int i=0; i < function.ParameterList.size(); i++){
@@ -3879,16 +3868,13 @@ for(int i=0; i < function.ParameterList.size(); i++){
             stack_.add_operand(function.ParameterList[i]);
             int arr=stack_.find_operand(function.ParameterList[i]);
             insts.push_back(rv::rv_inst(rv::rvOPCODE::FSW, rv::rvREG::X2, arr, rv::rvFREG(P2++))); 
-                cout<<insts[insts.size()-1].draw();
+              
         }
     
     }
     P1=10;P2=10;
 	int all_=insts.size();
-	for(auto it=j_.begin();it!=j_.end();it++){
-    	cout<<"------------------"<<endl;
-    	cout<<it->first<<endl;
-	}
+	
     for(int i=0; i<function.InstVec.size(); i++){
         instrs.push_back(insts.size());
             
@@ -3897,13 +3883,10 @@ for(int i=0; i < function.ParameterList.size(); i++){
     }
 
     insts[0].imm = (- stack_.delt);
-    for(auto it=j_.begin();it!=j_.end();it++){
-    	cout<<"------------------"<<endl;
-    	cout<<it->first<<endl;
-	}
+    
     for(int i = 0; i < function.InstVec.size(); i++){
         if(j_.find(i) != j_.end()) { 
-        cout<<"99899-----"<<i<<endl;
+        
             labels[i] = "label" + std::to_string(t);
             for(auto idx:j_[i]){
                 insts[idx].label ="label" + std::to_string(t);
@@ -3927,13 +3910,13 @@ for(int i=0; i < function.ParameterList.size(); i++){
 
        
         if(labels.find(i) != labels.end()) {
-        	cout<<"9999-----"<<i<<endl;
+        	
             al.push_back(rv::rv_inst(rv::rvOPCODE::LABEL, labels[i]));
         }
         for(int s = instrs[i]; s < instrs[i+1] ; s++) al.push_back(insts[s]);
     }
     if(labels.find(function.InstVec.size()-1) != labels.end()) {
-        	cout<<"9999-----"<<function.InstVec.size()-1<<endl;
+        	
             al.push_back(rv::rv_inst(rv::rvOPCODE::LABEL, labels[function.InstVec.size()-1]));
         }
 	for(int s = instrs[function.InstVec.size()-1]; s < insts.size() ; s++) al.push_back(insts[s]);
@@ -4512,6 +4495,7 @@ std::string rv::rv_inst::draw() const{
        
     }
 }
+
 
 
 
