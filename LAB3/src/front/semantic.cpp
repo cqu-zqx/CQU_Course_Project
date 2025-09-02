@@ -92,7 +92,7 @@ frontend::Analyzer::Analyzer(): tmp_cnt(0), symbol_table() {
 
 ir::Program frontend::Analyzer::get_ir_program(CompUnit* root) {
    
-    std::cout<<"888888888888888888888888888888888888888888888888"<<std::endl;
+  
     start1(root);
     end1();
     
@@ -358,10 +358,10 @@ void frontend::Analyzer::com_VarDef(AstNode* root, ir::Type type){
         int flag2=0;
         vector<int> nums1;
         for(int i = 2; i<root->children.size() && root->children[i]->type==NodeType::CONSTEXP; i+=3){
-        	std::cout<<"start"<<std::endl;
+        
             ConstExp* result=dynamic_cast<ConstExp*> (root->children[i]);
             com_ConstExp(result);
-            std::cout<<"end  "<<result->v<<std::endl;
+           
               if(result->v[0]>'9'||result->v[0]<'0'){
 			  flag2=1;
             nums1.push_back(30);}
@@ -369,8 +369,7 @@ void frontend::Analyzer::com_VarDef(AstNode* root, ir::Type type){
         }
         for(int i=0;i<nums1.size();i++)
         		num=num*nums1[i];//得到大小
-        std::cout<<"*-*-*-*-*-"<<num<<std::endl;
-        std::cout<<(dynamic_cast<Term*> (root->children[0]))->token.value<<std::endl;
+       
          //全局变量
        if(flag_quan){
        if(type==ir::Type::Int)
@@ -461,7 +460,7 @@ void frontend::Analyzer::com_VarDef(AstNode* root, ir::Type type){
 				else nowfunc->addInst(new Instruction(coperand,xu,value1,ir::Operator::store));                   
 
         }
-        std::cout<<"-----------48489    "<<nums.size()<<"    "<<num<<std::endl;
+      
         if(flag2==0||flag2==1){
 		
         if(type==ir::Type::Int)
@@ -610,7 +609,7 @@ for(int i=1;i<root->children[root->children.size()-1]->children.size()-1;i++){
             
             Cond* b=dynamic_cast<Cond*>(root->children[2]);
             com_Cond(b);
-            std::cout<<";';';';''"<<"    "<<b->v<<std::endl;
+           
             ir::Operand go_=ir::Operand(b->v,b->t);
             ir::Operand go_num=ir::Operand("2", ir::Type::IntLiteral);//满足if pc+2
             nowfunc->addInst(new ir::Instruction(go_, ir::Operand(), go_num, ir::Operator::_goto));
@@ -813,7 +812,7 @@ void frontend::Analyzer::com_Cond(Cond* root){
 }
 
 void frontend::Analyzer::com_MulExp(MulExp* root){
-	std::cout<<"mulexp"<<std::endl;
+	
 	int flag=0;
 		
     UnaryExp* fir=dynamic_cast<UnaryExp*>(root->children[0]);
@@ -830,8 +829,7 @@ void frontend::Analyzer::com_MulExp(MulExp* root){
     		if(sec->t==ir::Type::Float||sec->t==ir::Type::FloatLiteral)
     		flag=1;
 	}
-    std::cout<<root->children.size()<<std::endl;
-    std::cout<<"4564684848    "<<fir->v<<"   "<<toString(fir->t)<<std::endl;
+
     ir::Operand des1=ir::Operand("t"+std::to_string(scnum),ir::Type::Int);
     scnum++;
     ir::Operand des2=ir::Operand("t"+std::to_string(scnum),ir::Type::Float);
@@ -999,7 +997,7 @@ void frontend::Analyzer::com_MulExp(MulExp* root){
 }
 
 void frontend::Analyzer::com_AddExp(AddExp* root){
-	std::cout<<"addexp"<<std::endl;
+	
 		int flag=0;
 		
     MulExp* fir=dynamic_cast<MulExp*>(root->children[0]);
@@ -1016,8 +1014,7 @@ void frontend::Analyzer::com_AddExp(AddExp* root){
     		if(sec->t==ir::Type::Float||sec->t==ir::Type::FloatLiteral)
     		flag=1;
 	}
-    std::cout<<root->children.size()<<std::endl;
-    std::cout<<"4564684848    "<<fir->v<<"   "<<toString(fir->t)<<std::endl;
+   
     ir::Operand des1=ir::Operand("t"+std::to_string(scnum),ir::Type::Int);
     scnum++;
     ir::Operand des2=ir::Operand("t"+std::to_string(scnum),ir::Type::Float);
@@ -1154,11 +1151,11 @@ void frontend::Analyzer::com_AddExp(AddExp* root){
 
 
 void frontend::Analyzer::com_Number(Number* root){
-	 std::cout<<"number"<<std::endl;
+	 
 	if(dynamic_cast<Term*>(root->children[0])->token.type==TokenType::INTLTR){
 		root->is_computable = true;
 		root->v = dynamic_cast<Term*>(root->children[0])->token.value;
-		std::cout<<"?????"<<root->v<<std::endl;
+		
 		root->t = ir::Type::IntLiteral;
 		return;
 	}
@@ -1186,7 +1183,7 @@ void frontend::Analyzer::com_PrimaryExp(PrimaryExp *root){
         COPY_EXP_NODE(r, root);
         return;
     }
-    std::cout<<"primaryExp"<<std::endl;
+    
 	Number* r=dynamic_cast<Number*>(root->children[0]);
     com_Number(r); 
     COPY_EXP_NODE(r, root);
@@ -1200,7 +1197,7 @@ void frontend::Analyzer::com_PrimaryExp(PrimaryExp *root){
 void frontend::Analyzer::com_UnaryExp(UnaryExp* root){
   
     if(root->children.size()==1){
-    	std::cout<<"unaryexp"<<std::endl;
+    	
         PrimaryExp* r=dynamic_cast<PrimaryExp*>(root->children[0]);
         com_PrimaryExp(r);
         COPY_EXP_NODE(r, root);
@@ -1908,7 +1905,7 @@ fp=0;
 
    
    return;}
-   std::cout<<"75362555555555555555555555555555555555555  "<<toString(fir->t)<<"     "<<fir->v<<std::endl;
+   
     if(fir->t==ir::Type::Int||fir->t==ir::Type::IntLiteral){
 	
     COPY_tv_nt_NODE(des1,root);root->is_computable=false;}
@@ -2200,7 +2197,7 @@ fp=0;
 
    
    return;}
-   std::cout<<"75362555555555555555555555555555555555555  "<<toString(fir->t)<<"     "<<fir->v<<std::endl;
+
     if(fir->t==ir::Type::Int||fir->t==ir::Type::IntLiteral){
 	
     COPY_tv_nt_NODE(des1,root);root->is_computable=false;}
@@ -2262,7 +2259,7 @@ void frontend::Analyzer::com_LAndExp(LAndExp* root){
 		nowfunc->addInst(new ir::Instruction(des11, ir::Operand(), des3, ir::Operator::cvt_f2i));
 		}
         nowfunc->addInst(new ir::Instruction(des1, des3,des1, ir::Operator::_and));
-		std::cout<<"*-***********************----------------------------*************************---------"<<std::to_string(nowfunc->InstVec.size()-num)<<std::endl;
+	
 		nowfunc->InstVec.insert(nowfunc->InstVec.begin()+num,new ir::Instruction(t1, ir::Operand(), ir::Operand(std::to_string(nowfunc->InstVec.size()-num+1),ir::Type::IntLiteral), ir::Operator::_goto));
 
         COPY_tv_nt_NODE(des1, root);
@@ -2327,5 +2324,6 @@ nowfunc->InstVec.insert(nowfunc->InstVec.begin()+num,new ir::Instruction(is_, ir
     }
     
 }
+
 
 
